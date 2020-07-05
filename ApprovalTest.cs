@@ -12,7 +12,7 @@ namespace csharp
     public class ApprovalTest
     {
         [Test]
-        public void ThirtyDays()
+        public void GoldenMasterTest()
         {
             
             StringBuilder fakeoutput = new StringBuilder();
