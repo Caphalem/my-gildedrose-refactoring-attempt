@@ -5,7 +5,6 @@ namespace csharp.Services
 {
     public class BasicConsoleLogger : ILogger
     {
-
         public void Info(string message)
         {
             Console.WriteLine(message);

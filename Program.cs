@@ -1,4 +1,5 @@
 ﻿using ApprovalUtilities.Utilities;
+using csharp.Constants;
 using csharp.Interfaces;
 using csharp.Services;
 using System;
@@ -10,6 +11,7 @@ namespace csharp
     {
         private static ushort _days = 31;
         private static ILogger _logger = new BasicConsoleLogger();
+        private static readonly ItemNames _names = new ItemNames();
 
         public Program(ushort days, ILogger logger)
         {
@@ -46,55 +48,55 @@ namespace csharp
             return new List<Item> {
                 new Item
                 {
-                    Name = "+5 Dexterity Vest",
+                    Name = _names.DexterityVest,
                     SellIn = 10,
                     Quality = 20
                 },
                 new Item
                 {
-                    Name = "Aged Brie",
+                    Name = _names.AgedBrie,
                     SellIn = 2,
                     Quality = 0
                 },
                 new Item
                 {
-                    Name = "Elixir of the Mongoose",
+                    Name = _names.MongooseElixir,
                     SellIn = 5,
                     Quality = 7},
                 new Item
                 {
-                    Name = "Sulfuras, Hand of Ragnaros",
+                    Name = _names.Sulfuras,
                     SellIn = 0,
                     Quality = 80
                 },
                 new Item
                 {
-                    Name = "Sulfuras, Hand of Ragnaros",
+                    Name = _names.Sulfuras,
                     SellIn = -1,
                     Quality = 80
                 },
                 new Item
                 {
-                    Name = "Backstage passes to a TAFKAL80ETC concert",
+                    Name = _names.BackstagePass,
                     SellIn = 15,
                     Quality = 20
                 },
                 new Item
                 {
-                    Name = "Backstage passes to a TAFKAL80ETC concert",
+                    Name = _names.BackstagePass,
                     SellIn = 10,
                     Quality = 49
                 },
                 new Item
                 {
-                    Name = "Backstage passes to a TAFKAL80ETC concert",
+                    Name = _names.BackstagePass,
                     SellIn = 5,
                     Quality = 49
                 },
 				// this conjured item does not work properly yet
 				new Item
                 {
-                    Name = "Conjured Mana Cake",
+                    Name = _names.ConjuredManaCake,
                     SellIn = 3,
                     Quality = 6
                 }
