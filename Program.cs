@@ -1,20 +1,61 @@
-﻿using System;
+﻿using ApprovalUtilities.Utilities;
+using System;
 using System.Collections.Generic;
 
 namespace csharp
 {
     public class Program
     {
+        private static ushort _days = 31;
+
         public static void Main(string[] args)
         {
             Console.WriteLine("OMGHAI!");
 
-            IList<Item> Items = new List<Item>{
-                new Item {Name = "+5 Dexterity Vest", SellIn = 10, Quality = 20},
-                new Item {Name = "Aged Brie", SellIn = 2, Quality = 0},
-                new Item {Name = "Elixir of the Mongoose", SellIn = 5, Quality = 7},
-                new Item {Name = "Sulfuras, Hand of Ragnaros", SellIn = 0, Quality = 80},
-                new Item {Name = "Sulfuras, Hand of Ragnaros", SellIn = -1, Quality = 80},
+            IList<Item> items = InitializeItems();
+
+            var app = new GildedRose(items);
+
+            for (ushort i = 0; i < _days; i++)
+            {
+                ListItems(items, i);
+
+                app.UpdateQuality();
+            }
+        }
+
+        private static IList<Item> InitializeItems()
+        {
+            return new List<Item> {
+                new Item
+                {
+                    Name = "+5 Dexterity Vest",
+                    SellIn = 10,
+                    Quality = 20
+                },
+                new Item
+                {
+                    Name = "Aged Brie",
+                    SellIn = 2,
+                    Quality = 0
+                },
+                new Item
+                {
+                    Name = "Elixir of the Mongoose",
+                    SellIn = 5,
+                    Quality = 7},
+                new Item
+                {
+                    Name = "Sulfuras, Hand of Ragnaros",
+                    SellIn = 0,
+                    Quality = 80
+                },
+                new Item
+                {
+                    Name = "Sulfuras, Hand of Ragnaros",
+                    SellIn = -1,
+                    Quality = 80
+                },
                 new Item
                 {
                     Name = "Backstage passes to a TAFKAL80ETC concert",
@@ -34,23 +75,23 @@ namespace csharp
                     Quality = 49
                 },
 				// this conjured item does not work properly yet
-				new Item {Name = "Conjured Mana Cake", SellIn = 3, Quality = 6}
-            };
-
-            var app = new GildedRose(Items);
-
-
-            for (var i = 0; i < 31; i++)
-            {
-                Console.WriteLine("-------- day " + i + " --------");
-                Console.WriteLine("name, sellIn, quality");
-                for (var j = 0; j < Items.Count; j++)
+				new Item
                 {
-                    System.Console.WriteLine(Items[j]);
+                    Name = "Conjured Mana Cake",
+                    SellIn = 3,
+                    Quality = 6
                 }
-                Console.WriteLine("");
-                app.UpdateQuality();
-            }
+            };
+        }
+
+        private static void ListItems(IList<Item> items, ushort currentDay)
+        {
+            Console.WriteLine("-------- day " + currentDay + " --------");
+            Console.WriteLine("name, sellIn, quality");
+
+            items.ForEach((x) => Console.WriteLine(x));
+
+            Console.WriteLine("");
         }
     }
 }
