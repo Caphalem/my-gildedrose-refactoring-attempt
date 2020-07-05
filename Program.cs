@@ -1,4 +1,6 @@
 ﻿using ApprovalUtilities.Utilities;
+using csharp.Interfaces;
+using csharp.Services;
 using System;
 using System.Collections.Generic;
 
@@ -7,21 +9,36 @@ namespace csharp
     public class Program
     {
         private static ushort _days = 31;
+        private static ILogger _logger = new BasicConsoleLogger();
+
+        public Program(ushort days, ILogger logger)
+        {
+            _days = days;
+            _logger = logger;
+        }
 
         public static void Main(string[] args)
         {
-            Console.WriteLine("OMGHAI!");
-
-            IList<Item> items = InitializeItems();
-
-            var app = new GildedRose(items);
-
-            for (ushort i = 0; i < _days; i++)
+            try
             {
-                ListItems(items, i);
+                _logger.Info("OMGHAI!");
 
-                app.UpdateQuality();
+                IList<Item> items = InitializeItems();
+
+                var app = new GildedRose(items);
+
+                for (ushort i = 0; i < _days; i++)
+                {
+                    ListItems(items, i);
+
+                    app.UpdateQuality();
+                }
             }
+            catch (Exception ex)
+            {
+                _logger.Error($"Message: {ex.Message} StackTrace: {ex.StackTrace}");
+            }
+            
         }
 
         private static IList<Item> InitializeItems()
@@ -86,12 +103,12 @@ namespace csharp
 
         private static void ListItems(IList<Item> items, ushort currentDay)
         {
-            Console.WriteLine("-------- day " + currentDay + " --------");
-            Console.WriteLine("name, sellIn, quality");
+            _logger.Info("-------- day " + currentDay + " --------");
+            _logger.Info("name, sellIn, quality");
 
-            items.ForEach((x) => Console.WriteLine(x));
+            items.ForEach((x) => _logger.Info(x.ToString()));
 
-            Console.WriteLine("");
+            _logger.Info("");
         }
     }
 }
