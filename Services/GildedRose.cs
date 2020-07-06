@@ -6,7 +6,7 @@ namespace csharp.Services
 {
     public class GildedRose : IApplication
     {
-        private readonly List<Item> items;
+        private readonly List<Item> _items;
         private const ushort _maxQuality = 50;
         private const ushort _minQuality = 0;
         private const ushort _backstagePassDoubleQualityThreshold = 10;
@@ -16,12 +16,12 @@ namespace csharp.Services
 
         public GildedRose(List<Item> items)
         {
-            this.items = items;
+            _items = items;
         }
 
         public void UpdateQuality()
         {
-            foreach (Item item in items)
+            foreach (Item item in _items)
             {
                 if (item.Name != ItemNames.Sulfuras)
                 {

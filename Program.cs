@@ -1,5 +1,4 @@
-﻿using csharp.Constants;
-using csharp.Interfaces;
+﻿using csharp.Interfaces;
 using csharp.Services;
 using System;
 using System.Collections.Generic;
@@ -10,11 +9,15 @@ namespace csharp
     {
         private static ushort _days = 31;
         private static ILogger _logger = new BasicConsoleLogger();
+        private static ItemUtils _itemUtils = new ItemUtils(_logger);
+        private static List<Item> _items = _itemUtils.InitializeItems();
+        private static IApplication _app = new GildedRose(_items);
 
-        public Program(ushort days, ILogger logger)
+        public Program(ushort days, ILogger logger, IApplication app)
         {
             _days = days;
             _logger = logger;
+            _app = app;
         }
 
         public static void Main(string[] args)
@@ -23,91 +26,17 @@ namespace csharp
             {
                 _logger.Info("OMGHAI!");
 
-                List<Item> items = InitializeItems();
-
-                var app = new GildedRose(items);
-
                 for (ushort i = 0; i < _days; i++)
                 {
-                    ListItems(items, i);
+                    _itemUtils.ListItems(_items, i);
 
-                    app.UpdateQuality();
+                    _app.UpdateQuality();
                 }
             }
             catch (Exception ex)
             {
                 _logger.Error($"Message: {ex.Message} StackTrace: {ex.StackTrace}");
             }
-        }
-
-        private static List<Item> InitializeItems()
-        {
-            return new List<Item> {
-                new Item
-                {
-                    Name = ItemNames.DexterityVest,
-                    SellIn = 10,
-                    Quality = 20
-                },
-                new Item
-                {
-                    Name = ItemNames.AgedBrie,
-                    SellIn = 2,
-                    Quality = 0
-                },
-                new Item
-                {
-                    Name = ItemNames.MongooseElixir,
-                    SellIn = 5,
-                    Quality = 7},
-                new Item
-                {
-                    Name = ItemNames.Sulfuras,
-                    SellIn = 0,
-                    Quality = 80
-                },
-                new Item
-                {
-                    Name = ItemNames.Sulfuras,
-                    SellIn = -1,
-                    Quality = 80
-                },
-                new Item
-                {
-                    Name = ItemNames.BackstagePass,
-                    SellIn = 15,
-                    Quality = 20
-                },
-                new Item
-                {
-                    Name = ItemNames.BackstagePass,
-                    SellIn = 10,
-                    Quality = 49
-                },
-                new Item
-                {
-                    Name = ItemNames.BackstagePass,
-                    SellIn = 5,
-                    Quality = 49
-                },
-				// this conjured item does not work properly yet
-				new Item
-                {
-                    Name = ItemNames.ConjuredManaCake,
-                    SellIn = 3,
-                    Quality = 6
-                }
-            };
-        }
-
-        private static void ListItems(List<Item> items, ushort currentDay)
-        {
-            _logger.Info("-------- day " + currentDay + " --------");
-            _logger.Info("name, sellIn, quality");
-
-            items.ForEach(item => _logger.Info(item.ToString()));
-
-            _logger.Info("");
         }
     }
 }

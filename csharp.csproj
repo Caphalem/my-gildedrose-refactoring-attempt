@@ -79,6 +79,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Services\ItemUtils.cs" />
     <Compile Include="Tests\ApprovalTest.cs" />
     <Compile Include="Services\GildedRose.cs" />
     <Compile Include="Tests\GildedRoseTest.cs" />
