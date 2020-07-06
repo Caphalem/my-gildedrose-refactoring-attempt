@@ -1,5 +1,4 @@
-﻿using ApprovalUtilities.Utilities;
-using csharp.Constants;
+﻿using csharp.Constants;
 using csharp.Interfaces;
 using csharp.Services;
 using System;
@@ -25,7 +24,7 @@ namespace csharp
             {
                 _logger.Info("OMGHAI!");
 
-                IList<Item> items = InitializeItems();
+                List<Item> items = InitializeItems();
 
                 var app = new GildedRose(items);
 
@@ -40,10 +39,9 @@ namespace csharp
             {
                 _logger.Error($"Message: {ex.Message} StackTrace: {ex.StackTrace}");
             }
-            
         }
 
-        private static IList<Item> InitializeItems()
+        private static List<Item> InitializeItems()
         {
             return new List<Item> {
                 new Item
@@ -103,7 +101,7 @@ namespace csharp
             };
         }
 
-        private static void ListItems(IList<Item> items, ushort currentDay)
+        private static void ListItems(List<Item> items, ushort currentDay)
         {
             _logger.Info("-------- day " + currentDay + " --------");
             _logger.Info("name, sellIn, quality");
