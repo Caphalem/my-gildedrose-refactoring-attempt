@@ -1,5 +1,6 @@
 ﻿using csharp.Constants;
 using csharp.Interfaces;
+using csharp.Models;
 using System.Collections.Generic;
 
 namespace csharp.Services
@@ -13,67 +14,77 @@ namespace csharp.Services
             _logger = logger;
         }
 
-        public List<Item> InitializeItems()
+        public List<ExtendedItem> InitializeItems()
         {
-            return new List<Item> {
-                new Item
+            return new List<ExtendedItem> {
+                new ExtendedItem
                 {
                     Name = ItemNames.DexterityVest,
                     SellIn = 10,
-                    Quality = 20
+                    Quality = 20,
+                    Type = ItemType.Normal
                 },
-                new Item
+                new ExtendedItem
                 {
                     Name = ItemNames.AgedBrie,
                     SellIn = 2,
-                    Quality = 0
+                    Quality = 0,
+                    Type = ItemType.Aging
                 },
-                new Item
+                new ExtendedItem
                 {
                     Name = ItemNames.MongooseElixir,
                     SellIn = 5,
-                    Quality = 7},
-                new Item
+                    Quality = 7,
+                    Type = ItemType.Normal
+                },
+                new ExtendedItem
                 {
                     Name = ItemNames.Sulfuras,
                     SellIn = 0,
-                    Quality = 80
+                    Quality = 80,
+                    Type = ItemType.Legendary
                 },
-                new Item
+                new ExtendedItem
                 {
                     Name = ItemNames.Sulfuras,
                     SellIn = -1,
-                    Quality = 80
+                    Quality = 80,
+                    Type = ItemType.Legendary
                 },
-                new Item
+                new ExtendedItem
                 {
                     Name = ItemNames.BackstagePass,
                     SellIn = 15,
-                    Quality = 20
+                    Quality = 20,
+                    Type = ItemType.Concert
                 },
-                new Item
+                new ExtendedItem
                 {
                     Name = ItemNames.BackstagePass,
                     SellIn = 10,
-                    Quality = 49
+                    Quality = 49,
+                    Type = ItemType.Concert
                 },
-                new Item
+                new ExtendedItem
                 {
                     Name = ItemNames.BackstagePass,
                     SellIn = 5,
-                    Quality = 49
+                    Quality = 49,
+                    Type = ItemType.Concert
                 },
-				// this conjured item does not work properly yet
-				new Item
+				
+				new ExtendedItem
                 {
                     Name = ItemNames.ConjuredManaCake,
                     SellIn = 3,
-                    Quality = 6
+                    Quality = 6,
+                    Type = ItemType.Conjured
                 }
             };
         }
 
-        public void ListItems(List<Item> items, ushort currentDay)
+        public void ListItems(List<ExtendedItem> items, ushort currentDay)
         {
             _logger.Info("-------- day " + currentDay + " --------");
             _logger.Info("name, sellIn, quality");

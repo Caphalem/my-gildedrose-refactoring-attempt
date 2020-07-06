@@ -1,12 +1,13 @@
 ﻿using csharp.Constants;
 using csharp.Interfaces;
+using csharp.Models;
 using System.Collections.Generic;
 
 namespace csharp.Services
 {
     public class GildedRose : IApplication
     {
-        private readonly List<Item> _items;
+        private readonly List<ExtendedItem> _items;
         private const ushort _maxQuality = 50;
         private const ushort _minQuality = 0;
         private const ushort _backstagePassDoubleQualityThreshold = 10;
@@ -14,25 +15,28 @@ namespace csharp.Services
         private const ushort _backstagePassZeroQualityThreshold = 0;
         private const ushort _itemDoubleQualityDegradeThreshold = 0;
 
-        public GildedRose(List<Item> items)
+        public GildedRose(List<ExtendedItem> items)
         {
             _items = items;
         }
 
         public void UpdateQuality()
         {
-            foreach (Item item in _items)
+            foreach (ExtendedItem item in _items)
             {
-                switch (item.Name)
+                switch (item.Type)
                 {
-                    case ItemNames.Sulfuras:
+                    case ItemType.Legendary:
                         item.SellIn++;
                         break;
-                    case ItemNames.AgedBrie:
+                    case ItemType.Aging:
                         item.Quality = HandleAgedBrieQuality(item);
                         break;
-                    case ItemNames.BackstagePass:
+                    case ItemType.Concert:
                         item.Quality = HandleBackstagePassQuality(item);
+                        break;
+                    case ItemType.Conjured: // comment this case out for GoldenMaster to work
+                        item.Quality = HandleConjuredItemQuality(item);
                         break;
                     default:
                         item.Quality = HandleNormalItemQuality(item);
@@ -43,7 +47,7 @@ namespace csharp.Services
             }
         }
 
-        private int HandleAgedBrieQuality(Item agedBrie)
+        private int HandleAgedBrieQuality(ExtendedItem agedBrie)
         {
             if (agedBrie.SellIn <= _itemDoubleQualityDegradeThreshold)
             {
@@ -55,7 +59,7 @@ namespace csharp.Services
             }
         }
 
-        private int HandleBackstagePassQuality(Item backstagePass)
+        private int HandleBackstagePassQuality(ExtendedItem backstagePass)
         {
             if (backstagePass.SellIn <= _backstagePassZeroQualityThreshold)
             {
@@ -75,7 +79,7 @@ namespace csharp.Services
             }
         }
 
-        private int HandleNormalItemQuality(Item item)
+        private int HandleNormalItemQuality(ExtendedItem item)
         {
             if (item.SellIn <= _itemDoubleQualityDegradeThreshold)
             {
@@ -87,7 +91,19 @@ namespace csharp.Services
             }
         }
 
-        private int IncreaseQuality(Item item, ushort amount)
+        private int HandleConjuredItemQuality(ExtendedItem item)
+        {
+            if (item.SellIn <= _itemDoubleQualityDegradeThreshold)
+            {
+                return DecreaseQuality(item, 4);
+            }
+            else
+            {
+                return DecreaseQuality(item, 2);
+            }
+        }
+
+        private int IncreaseQuality(ExtendedItem item, ushort amount)
         {
             if (item.Quality + amount < _maxQuality)
             {
@@ -101,7 +117,7 @@ namespace csharp.Services
             return item.Quality;
         }
 
-        private int DecreaseQuality(Item item, ushort amount)
+        private int DecreaseQuality(ExtendedItem item, ushort amount)
         {
             if (item.Quality - amount > _minQuality)
             {

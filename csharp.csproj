@@ -79,13 +79,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\ExtendedItem.cs" />
     <Compile Include="Services\ItemUtils.cs" />
     <Compile Include="Tests\ApprovalTest.cs" />
     <Compile Include="Services\GildedRose.cs" />
     <Compile Include="Tests\GildedRoseTest.cs" />
     <Compile Include="Interfaces\IApplication.cs" />
     <Compile Include="Interfaces\ILogger.cs" />
-    <Compile Include="Item.cs" />
+    <Compile Include="Models\Item.cs" />
     <Compile Include="Constants\ItemNames.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

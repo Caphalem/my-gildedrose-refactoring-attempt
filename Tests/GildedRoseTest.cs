@@ -1,4 +1,5 @@
 ﻿using csharp.Constants;
+using csharp.Models;
 using csharp.Services;
 using NUnit.Framework;
 using System.Collections.Generic;
@@ -8,18 +9,18 @@ namespace csharp.Tests
     [TestFixture]
     public class GildedRoseTest
     {
-        private List<Item> items;
+        private List<ExtendedItem> items;
         private GildedRose app;
 
         [SetUp]
         public void Setup()
         {
-            items = new List<Item> { new Item { Name = "foo", SellIn = 5, Quality = 5 } };
+            items = new List<ExtendedItem> { new ExtendedItem { Name = "foo", SellIn = 5, Quality = 5, Type = ItemType.Normal } };
             app = new GildedRose(items);
         }
 
         [Test]
-        public void ShouldDecreaseItemSellInAfterUpdateQualityBy1()
+        public void ShouldDecreaseNormalItemSellInAfterUpdateQualityBy1()
         {
             app.UpdateQuality();
 
@@ -27,7 +28,7 @@ namespace csharp.Tests
         }
 
         [Test]
-        public void ShouldDecreaseItemQualityAfterUpdateQualityBy1()
+        public void ShouldDecreaseNormalItemQualityAfterUpdateQualityBy1()
         {
             app.UpdateQuality();
 
@@ -35,9 +36,9 @@ namespace csharp.Tests
         }
 
         [Test]
-        public void ShouldDecreaseItemQualityAfterUpdateQualityBy2IfSellInIs0()
+        public void ShouldDecreaseNormalItemQualityAfterUpdateQualityBy2IfSellInIs0()
         {
-            items = new List<Item> { new Item { Name = "foo", SellIn = 0, Quality = 5 } };
+            items = new List<ExtendedItem> { new ExtendedItem { Name = "foo", SellIn = 0, Quality = 5, Type = ItemType.Normal } };
             app = new GildedRose(items);
 
             app.UpdateQuality();
@@ -46,9 +47,9 @@ namespace csharp.Tests
         }
 
         [Test]
-        public void ShouldNotDecreaseItemQualityBelow0AfterUpdateQualityIfSellInIs0AndQualityIs1()
+        public void ShouldNotDecreaseNormalItemQualityBelow0AfterUpdateQualityIfSellInIs0AndQualityIs1()
         {
-            items = new List<Item> { new Item { Name = "foo", SellIn = 0, Quality = 1 } };
+            items = new List<ExtendedItem> { new ExtendedItem { Name = "foo", SellIn = 0, Quality = 1, Type = ItemType.Normal } };
             app = new GildedRose(items);
 
             app.UpdateQuality();
@@ -57,9 +58,9 @@ namespace csharp.Tests
         }
 
         [Test]
-        public void ShouldNotDecreaseItemQualityAfterUpdateQualityIfQualityIs0()
+        public void ShouldNotDecreaseNormalItemQualityAfterUpdateQualityIfQualityIs0()
         {
-            items = new List<Item> { new Item { Name = "foo", SellIn = 5, Quality = 0 } };
+            items = new List<ExtendedItem> { new ExtendedItem { Name = "foo", SellIn = 5, Quality = 0, Type = ItemType.Normal } };
             app = new GildedRose(items);
 
             app.UpdateQuality();
@@ -68,9 +69,9 @@ namespace csharp.Tests
         }
 
         [Test]
-        public void ShouldIncreaseAgedBrieItemQualityAfterUpdateQualityBy1()
+        public void ShouldIncreaseAgingItemQualityAfterUpdateQualityBy1()
         {
-            items = new List<Item> { new Item { Name = ItemNames.AgedBrie, SellIn = 1, Quality = 0 } };
+            items = new List<ExtendedItem> { new ExtendedItem { Name = ItemNames.AgedBrie, SellIn = 1, Quality = 0, Type = ItemType.Aging } };
             app = new GildedRose(items);
 
             app.UpdateQuality();
@@ -80,9 +81,9 @@ namespace csharp.Tests
 
         [TestCase(0)]
         [TestCase(-1)]
-        public void ShouldIncreaseAgedBrieItemQualityAfterUpdateQualityBy2IfSellInIs0OrLower(int sellIn)
+        public void ShouldIncreaseAgingItemQualityAfterUpdateQualityBy2IfSellInIs0OrLower(int sellIn)
         {
-            items = new List<Item> { new Item { Name = ItemNames.AgedBrie, SellIn = sellIn, Quality = 10 } };
+            items = new List<ExtendedItem> { new ExtendedItem { Name = ItemNames.AgedBrie, SellIn = sellIn, Quality = 10, Type = ItemType.Aging } };
             app = new GildedRose(items);
 
             app.UpdateQuality();
@@ -93,9 +94,9 @@ namespace csharp.Tests
         [TestCase(1, 50)]
         [TestCase(0, 49)]
         [TestCase(-1, 49)]
-        public void ShouldNotIncreaseAgedBrieItemQualityAbove50AfterUpdateQuality(int sellIn, int quality)
+        public void ShouldNotIncreaseAgingItemQualityAbove50AfterUpdateQuality(int sellIn, int quality)
         {
-            items = new List<Item> { new Item { Name = ItemNames.AgedBrie, SellIn = sellIn, Quality = quality } };
+            items = new List<ExtendedItem> { new ExtendedItem { Name = ItemNames.AgedBrie, SellIn = sellIn, Quality = quality, Type = ItemType.Aging } };
             app = new GildedRose(items);
 
             app.UpdateQuality();
@@ -104,9 +105,9 @@ namespace csharp.Tests
         }
 
         [Test]
-        public void ShouldNotChangeItemSellInOrQualityValuesIfItemNameIsSulfuras()
+        public void ShouldNotChangeLegendaryItemSellInOrQualityValues()
         {
-            items = new List<Item> { new Item { Name = ItemNames.Sulfuras, SellIn = 1, Quality = 1 } };
+            items = new List<ExtendedItem> { new ExtendedItem { Name = ItemNames.Sulfuras, SellIn = 1, Quality = 1, Type = ItemType.Legendary } };
             app = new GildedRose(items);
 
             app.UpdateQuality();
@@ -116,9 +117,9 @@ namespace csharp.Tests
         }
 
         [Test]
-        public void ShouldIncreaseBackstagePassItemQualityAfterUpdateQualityBy1()
+        public void ShouldIncreaseConcertItemQualityAfterUpdateQualityBy1()
         {
-            items = new List<Item> { new Item { Name = ItemNames.BackstagePass, SellIn = 20, Quality = 1 } };
+            items = new List<ExtendedItem> { new ExtendedItem { Name = ItemNames.BackstagePass, SellIn = 20, Quality = 1, Type = ItemType.Concert } };
             app = new GildedRose(items);
 
             app.UpdateQuality();
@@ -131,9 +132,9 @@ namespace csharp.Tests
         [TestCase(8)]
         [TestCase(7)]
         [TestCase(6)]
-        public void ShouldIncreaseBackstagePassItemQualityAfterUpdateQualityBy2IfSellInIsBetween11And5Exclusive(int sellIn)
+        public void ShouldIncreaseConcertItemQualityAfterUpdateQualityBy2IfSellInIsBetween11And5Exclusive(int sellIn)
         {
-            items = new List<Item> { new Item { Name = ItemNames.BackstagePass, SellIn = sellIn, Quality = 1 } };
+            items = new List<ExtendedItem> { new ExtendedItem { Name = ItemNames.BackstagePass, SellIn = sellIn, Quality = 1, Type = ItemType.Concert } };
             app = new GildedRose(items);
 
             app.UpdateQuality();
@@ -146,9 +147,9 @@ namespace csharp.Tests
         [TestCase(3)]
         [TestCase(2)]
         [TestCase(1)]
-        public void ShouldIncreaseBackstagePassItemQualityAfterUpdateQualityBy3IfSellInIsBetween6And0Exclusive(int sellIn)
+        public void ShouldIncreaseConcertItemQualityAfterUpdateQualityBy3IfSellInIsBetween6And0Exclusive(int sellIn)
         {
-            items = new List<Item> { new Item { Name = ItemNames.BackstagePass, SellIn = sellIn, Quality = 1 } };
+            items = new List<ExtendedItem> { new ExtendedItem { Name = ItemNames.BackstagePass, SellIn = sellIn, Quality = 1, Type = ItemType.Concert } };
             app = new GildedRose(items);
 
             app.UpdateQuality();
@@ -157,9 +158,9 @@ namespace csharp.Tests
         }
 
         [Test]
-        public void ShouldSetBackstagePassItemQualityAfterUpdateQualityTo0IfSellInIs0()
+        public void ShouldSetConcertItemQualityAfterUpdateQualityTo0IfSellInIs0()
         {
-            items = new List<Item> { new Item { Name = ItemNames.BackstagePass, SellIn = 0, Quality = 10 } };
+            items = new List<ExtendedItem> { new ExtendedItem { Name = ItemNames.BackstagePass, SellIn = 0, Quality = 10, Type = ItemType.Concert } };
             app = new GildedRose(items);
 
             app.UpdateQuality();
@@ -178,9 +179,9 @@ namespace csharp.Tests
         [TestCase(3)]
         [TestCase(2)]
         [TestCase(1)]
-        public void ShouldNotIncreaseBackstagePassItemQualityAfterUpdateQualityIfQualityIs50(int sellIn)
+        public void ShouldNotIncreaseConcertItemQualityAfterUpdateQualityIfQualityIs50(int sellIn)
         {
-            items = new List<Item> { new Item { Name = ItemNames.BackstagePass, SellIn = sellIn, Quality = 50 } };
+            items = new List<ExtendedItem> { new ExtendedItem { Name = ItemNames.BackstagePass, SellIn = sellIn, Quality = 50, Type = ItemType.Concert } };
             app = new GildedRose(items);
 
             app.UpdateQuality();
@@ -191,7 +192,7 @@ namespace csharp.Tests
         [Test]
         public void ShouldDecreaseConjuredItemQualityBy2AfterUpdateQuality()
         {
-            items = new List<Item> { new Item { Name = ItemNames.ConjuredManaCake, SellIn = 1, Quality = 50 } };
+            items = new List<ExtendedItem> { new ExtendedItem { Name = ItemNames.ConjuredManaCake, SellIn = 1, Quality = 50, Type = ItemType.Conjured } };
             app = new GildedRose(items);
 
             app.UpdateQuality();
@@ -203,7 +204,7 @@ namespace csharp.Tests
         [TestCase(-1)]
         public void ShouldDecreaseConjuredItemQualityBy4AfterUpdateQualityIfSellInIs0OrLower(int sellIn)
         {
-            items = new List<Item> { new Item { Name = ItemNames.ConjuredManaCake, SellIn = sellIn, Quality = 50 } };
+            items = new List<ExtendedItem> { new ExtendedItem { Name = ItemNames.ConjuredManaCake, SellIn = sellIn, Quality = 50, Type = ItemType.Conjured } };
             app = new GildedRose(items);
 
             app.UpdateQuality();
@@ -216,7 +217,7 @@ namespace csharp.Tests
         [TestCase(-1)]
         public void ShouldNotDecreaseConjuredItemQualityBelow0AfterUpdateQuality(int sellIn)
         {
-            items = new List<Item> { new Item { Name = ItemNames.ConjuredManaCake, SellIn = sellIn, Quality = 2 } };
+            items = new List<ExtendedItem> { new ExtendedItem { Name = ItemNames.ConjuredManaCake, SellIn = sellIn, Quality = 2, Type = ItemType.Conjured } };
             app = new GildedRose(items);
 
             app.UpdateQuality();

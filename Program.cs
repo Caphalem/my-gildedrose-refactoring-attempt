@@ -1,4 +1,5 @@
 ﻿using csharp.Interfaces;
+using csharp.Models;
 using csharp.Services;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace csharp
         private static ushort _days = 31;
         private static ILogger _logger = new BasicConsoleLogger();
         private static readonly ItemUtils _itemUtils = new ItemUtils(_logger);
-        private static readonly List<Item> _items = _itemUtils.InitializeItems();
+        private static readonly List<ExtendedItem> _items = _itemUtils.InitializeItems();
         private static IApplication _app = new GildedRose(_items);
 
         public Program(ushort days, ILogger logger, IApplication app)
