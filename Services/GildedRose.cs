@@ -23,23 +23,23 @@ namespace csharp.Services
         {
             foreach (Item item in _items)
             {
-                if (item.Name != ItemNames.Sulfuras)
+                switch (item.Name)
                 {
-                    switch (item.Name)
-                    {
-                        case ItemNames.AgedBrie:
-                            item.Quality = HandleAgedBrieQuality(item);
-                            break;
-                        case ItemNames.BackstagePass:
-                            item.Quality = HandleBackstagePassQuality(item);
-                            break;
-                        default:
-                            item.Quality = HandleNormalItemQuality(item);
-                            break;
-                    }
-
-                    item.SellIn--;
+                    case ItemNames.Sulfuras:
+                        item.SellIn++;
+                        break;
+                    case ItemNames.AgedBrie:
+                        item.Quality = HandleAgedBrieQuality(item);
+                        break;
+                    case ItemNames.BackstagePass:
+                        item.Quality = HandleBackstagePassQuality(item);
+                        break;
+                    default:
+                        item.Quality = HandleNormalItemQuality(item);
+                        break;
                 }
+
+                item.SellIn--;
             }
         }
 

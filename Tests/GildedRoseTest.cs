@@ -187,5 +187,41 @@ namespace csharp.Tests
 
             Assert.AreEqual(50, items[0].Quality);
         }
+
+        [Test]
+        public void ShouldDecreaseConjuredItemQualityBy2AfterUpdateQuality()
+        {
+            items = new List<Item> { new Item { Name = ItemNames.ConjuredManaCake, SellIn = 1, Quality = 50 } };
+            app = new GildedRose(items);
+
+            app.UpdateQuality();
+
+            Assert.AreEqual(48, items[0].Quality);
+        }
+
+        [TestCase(0)]
+        [TestCase(-1)]
+        public void ShouldDecreaseConjuredItemQualityBy4AfterUpdateQualityIfSellInIs0OrLower(int sellIn)
+        {
+            items = new List<Item> { new Item { Name = ItemNames.ConjuredManaCake, SellIn = sellIn, Quality = 50 } };
+            app = new GildedRose(items);
+
+            app.UpdateQuality();
+
+            Assert.AreEqual(46, items[0].Quality);
+        }
+
+        [TestCase(1)]
+        [TestCase(0)]
+        [TestCase(-1)]
+        public void ShouldNotDecreaseConjuredItemQualityBelow0AfterUpdateQuality(int sellIn)
+        {
+            items = new List<Item> { new Item { Name = ItemNames.ConjuredManaCake, SellIn = sellIn, Quality = 2 } };
+            app = new GildedRose(items);
+
+            app.UpdateQuality();
+
+            Assert.AreEqual(0, items[0].Quality);
+        }
     }
 }
