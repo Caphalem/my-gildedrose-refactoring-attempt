@@ -1,11 +1,19 @@
-﻿using csharp.Interfaces;
+﻿using csharp.Constants;
+using csharp.Interfaces;
 using System.Collections.Generic;
 
 namespace csharp.Services
 {
     public class GildedRose : IApplication
     {
-        List<Item> items;
+        private readonly List<Item> items;
+        private const ushort _maxQuality = 50;
+        private const ushort _minQuality = 0;
+        private const ushort _backstagePassDoubleQualityThreshold = 10;
+        private const ushort _backstagePassTripleQualityThreshold = 5;
+        private const ushort _backstagePassZeroQualityThreshold = 0;
+        private const ushort _itemDoubleQualityDegradeThreshold = 0;
+
         public GildedRose(List<Item> items)
         {
             this.items = items;
@@ -13,78 +21,98 @@ namespace csharp.Services
 
         public void UpdateQuality()
         {
-            for (var i = 0; i < items.Count; i++)
+            foreach (Item item in items)
             {
-                if (items[i].Name != "Aged Brie" && items[i].Name != "Backstage passes to a TAFKAL80ETC concert")
+                if (item.Name != ItemNames.Sulfuras)
                 {
-                    if (items[i].Quality > 0)
+                    switch (item.Name)
                     {
-                        if (items[i].Name != "Sulfuras, Hand of Ragnaros")
-                        {
-                            items[i].Quality = items[i].Quality - 1;
-                        }
+                        case ItemNames.AgedBrie:
+                            item.Quality = HandleAgedBrieQuality(item);
+                            break;
+                        case ItemNames.BackstagePass:
+                            item.Quality = HandleBackstagePassQuality(item);
+                            break;
+                        default:
+                            item.Quality = HandleNormalItemQuality(item);
+                            break;
                     }
-                }
-                else
-                {
-                    if (items[i].Quality < 50)
-                    {
-                        items[i].Quality = items[i].Quality + 1;
 
-                        if (items[i].Name == "Backstage passes to a TAFKAL80ETC concert")
-                        {
-                            if (items[i].SellIn < 11)
-                            {
-                                if (items[i].Quality < 50)
-                                {
-                                    items[i].Quality = items[i].Quality + 1;
-                                }
-                            }
-
-                            if (items[i].SellIn < 6)
-                            {
-                                if (items[i].Quality < 50)
-                                {
-                                    items[i].Quality = items[i].Quality + 1;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                if (items[i].Name != "Sulfuras, Hand of Ragnaros")
-                {
-                    items[i].SellIn = items[i].SellIn - 1;
-                }
-
-                if (items[i].SellIn < 0)
-                {
-                    if (items[i].Name != "Aged Brie")
-                    {
-                        if (items[i].Name != "Backstage passes to a TAFKAL80ETC concert")
-                        {
-                            if (items[i].Quality > 0)
-                            {
-                                if (items[i].Name != "Sulfuras, Hand of Ragnaros")
-                                {
-                                    items[i].Quality = items[i].Quality - 1;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            items[i].Quality = items[i].Quality - items[i].Quality;
-                        }
-                    }
-                    else
-                    {
-                        if (items[i].Quality < 50)
-                        {
-                            items[i].Quality = items[i].Quality + 1;
-                        }
-                    }
+                    item.SellIn--;
                 }
             }
+        }
+
+        private int HandleAgedBrieQuality(Item agedBrie)
+        {
+            if (agedBrie.SellIn <= _itemDoubleQualityDegradeThreshold)
+            {
+                return IncreaseQuality(agedBrie, 2);
+            }
+            else
+            {
+                return IncreaseQuality(agedBrie, 1);
+            }
+        }
+
+        private int HandleBackstagePassQuality(Item backstagePass)
+        {
+            if (backstagePass.SellIn <= _backstagePassZeroQualityThreshold)
+            {
+                return 0;
+            }
+            else if (backstagePass.SellIn <= _backstagePassTripleQualityThreshold)
+            {
+                return IncreaseQuality(backstagePass, 3);
+            }
+            else if (backstagePass.SellIn <= _backstagePassDoubleQualityThreshold)
+            {
+                return IncreaseQuality(backstagePass, 2);
+            }
+            else
+            {
+                return IncreaseQuality(backstagePass, 1);
+            }
+        }
+
+        private int HandleNormalItemQuality(Item item)
+        {
+            if (item.SellIn <= _itemDoubleQualityDegradeThreshold)
+            {
+                return DecreaseQuality(item, 2);
+            }
+            else
+            {
+                return DecreaseQuality(item, 1);
+            }
+        }
+
+        private int IncreaseQuality(Item item, ushort amount)
+        {
+            if (item.Quality + amount < _maxQuality)
+            {
+                item.Quality += amount;
+            }
+            else
+            {
+                item.Quality = _maxQuality;
+            }
+
+            return item.Quality;
+        }
+
+        private int DecreaseQuality(Item item, ushort amount)
+        {
+            if (item.Quality - amount > _minQuality)
+            {
+                item.Quality -= amount;
+            }
+            else
+            {
+                item.Quality = _minQuality;
+            }
+
+            return item.Quality;
         }
     }
 }

@@ -10,7 +10,6 @@ namespace csharp
     {
         private static ushort _days = 31;
         private static ILogger _logger = new BasicConsoleLogger();
-        private static readonly ItemNames _names = new ItemNames();
 
         public Program(ushort days, ILogger logger)
         {
@@ -46,55 +45,55 @@ namespace csharp
             return new List<Item> {
                 new Item
                 {
-                    Name = _names.DexterityVest,
+                    Name = ItemNames.DexterityVest,
                     SellIn = 10,
                     Quality = 20
                 },
                 new Item
                 {
-                    Name = _names.AgedBrie,
+                    Name = ItemNames.AgedBrie,
                     SellIn = 2,
                     Quality = 0
                 },
                 new Item
                 {
-                    Name = _names.MongooseElixir,
+                    Name = ItemNames.MongooseElixir,
                     SellIn = 5,
                     Quality = 7},
                 new Item
                 {
-                    Name = _names.Sulfuras,
+                    Name = ItemNames.Sulfuras,
                     SellIn = 0,
                     Quality = 80
                 },
                 new Item
                 {
-                    Name = _names.Sulfuras,
+                    Name = ItemNames.Sulfuras,
                     SellIn = -1,
                     Quality = 80
                 },
                 new Item
                 {
-                    Name = _names.BackstagePass,
+                    Name = ItemNames.BackstagePass,
                     SellIn = 15,
                     Quality = 20
                 },
                 new Item
                 {
-                    Name = _names.BackstagePass,
+                    Name = ItemNames.BackstagePass,
                     SellIn = 10,
                     Quality = 49
                 },
                 new Item
                 {
-                    Name = _names.BackstagePass,
+                    Name = ItemNames.BackstagePass,
                     SellIn = 5,
                     Quality = 49
                 },
 				// this conjured item does not work properly yet
 				new Item
                 {
-                    Name = _names.ConjuredManaCake,
+                    Name = ItemNames.ConjuredManaCake,
                     SellIn = 3,
                     Quality = 6
                 }
@@ -106,7 +105,7 @@ namespace csharp
             _logger.Info("-------- day " + currentDay + " --------");
             _logger.Info("name, sellIn, quality");
 
-            items.ForEach((x) => _logger.Info(x.ToString()));
+            items.ForEach(item => _logger.Info(item.ToString()));
 
             _logger.Info("");
         }
