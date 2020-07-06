@@ -30,10 +30,10 @@ namespace csharp.Services
                         item.SellIn++;
                         break;
                     case ItemType.Aging:
-                        item.Quality = HandleAgedBrieQuality(item);
+                        item.Quality = HandleAgingItemQuality(item);
                         break;
                     case ItemType.Concert:
-                        item.Quality = HandleBackstagePassQuality(item);
+                        item.Quality = HandleConcertItemQuality(item);
                         break;
                     case ItemType.Conjured: // comment this case out for GoldenMaster to work
                         item.Quality = HandleConjuredItemQuality(item);
@@ -47,7 +47,7 @@ namespace csharp.Services
             }
         }
 
-        private int HandleAgedBrieQuality(ExtendedItem agedBrie)
+        private int HandleAgingItemQuality(ExtendedItem agedBrie)
         {
             if (agedBrie.SellIn <= _itemDoubleQualityDegradeThreshold)
             {
@@ -59,7 +59,7 @@ namespace csharp.Services
             }
         }
 
-        private int HandleBackstagePassQuality(ExtendedItem backstagePass)
+        private int HandleConcertItemQuality(ExtendedItem backstagePass)
         {
             if (backstagePass.SellIn <= _backstagePassZeroQualityThreshold)
             {
